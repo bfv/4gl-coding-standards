@@ -7,7 +7,7 @@
 - public, protected members: PascalCase
 - private members: camelCase
 
-# indentation
+## indentation
 Indentation is 4 spaces. Not 2, not tabs.
 
 ## prefixes
@@ -28,19 +28,24 @@ Interfaces are prefixed with `I`
 ## operators
 Used `=, <>, <, <=, >, >=` NOT `eq, ne, etc`
 When in doubt, use parentheses for the expression:
-```success = (returnCode = 'OK')```
+```
+success = (returnCode = 'OK')
+```
 (remember, operators line `+=` are on their way > 12.2)
 
 ## if-then-else
 Parentheses are put around the expression.
-```if (expr) then
+```
+if (expr) then
     // something
 else
-    // something different```
+    // something different
+```
 
 and
 
-```if (expr) then do:
+```
+if (expr) then do:
     // something
 end.
 else do:
