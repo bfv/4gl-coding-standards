@@ -75,24 +75,24 @@ if (openOrders) then
 Use a variable to tell the reader what the expression actually represents. Use that variable for follow up behavior.
 The performance impact of using a variable is negligible, the readability is increased dramatically.
 
-## Functions/methods
+## functions/methods
 Try for your methods and functions to be pure. This mean that the result is a function of the input parameters AND has no side effects. The latter is not always possible (think database I/O), but well worth striving for. It makes your code predictable and testables. Try to avoid using "globals" in functions/methods. If they are needed inject then parameter. So:
 
 ```
 class Foo:
   
-  define private variable Y as integer no-undo.
+    define private variable Y as integer no-undo.
 
-  // anti pattern:
-  method private integer add (x as integer):
-    return x + this-object:Y.
-  end method.
+    // anti pattern:
+    method private integer add (x as integer):
+        return x + this-object:Y.
+    end method.
 
-  // use:
-  method private integer add (x as integer, z as integer):
-    return x + z.
-  end method.
+    // use:
+    method private integer add (x as integer, z as integer):
+        return x + z.
+    end method.
 
-  // and call add(1, Y).
+    // and call add(1, Y).
 end class.
 ```
