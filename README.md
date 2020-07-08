@@ -28,6 +28,7 @@ Interfaces are prefixed with `I`
 ## operators
 Used `=, <>, <, <=, >, >=` NOT `eq, ne, etc`
 When in doubt, use parentheses for the expression:
+
 ```
 success = (returnCode = 'OK')
 ```
@@ -35,6 +36,7 @@ success = (returnCode = 'OK')
 
 ## if-then-else
 Parentheses are put around the expression.
+
 ```
 if (expr) then
     // something
