@@ -1,20 +1,27 @@
 # 4GL coding standards
 
 ## casing
-- 4GL statements: *lowercase* 
+- 4GL statements: *lowercase* (every self respecting language uses lowercase)
 - directory names: lowercase (so also for package of `using`)
+- `.p`, `.i` & `.w` filenames in lowercase
 - Class names: PascalCase
 - public, protected members: PascalCase
 - private members: camelCase
 
 ## indentation
 Indentation is 4 spaces. Not 2, not tabs.
+Correct indentation is essential for readability. There's no excuse to mess this up.
 
 ## prefixes
-No prefixes for variables, parameters for either their datatype and they're being input/output. If one thinks prefixes are necessary they arguably make their (internal) procedure and/or methods too big.
+No prefixes for variables, parameters for either their datatype and they're being input/output. If one thinks prefixes are necessary they arguably make their (internal) procedure and/or methods too big. Exceptions for "technical datatypes":
+- `h` for handle
+- `ptr` for memptr
+- `raw` for raw
 
 ### buffers 
-Buffers are prefixed by `b-`
+Buffers are prefixed by `b-`. So:
+```define buffer b-customer for customer.```
+If more than one buffer is necessary then postfix them, `b-customer2`.
 
 ### temp-tables 
 Temp-tables are prefixed with `tt`
@@ -26,7 +33,7 @@ Datasets are prefixed with `ds`
 Interfaces are prefixed with `I`
 
 ## operators
-Used `=, <>, <, <=, >, >=` NOT `eq, ne, etc`
+Used `=, <>, <, <=, >, >=` NOT `eq, ne, le`, etc
 When in doubt, use parentheses for the expression:
 
 ```
@@ -35,7 +42,7 @@ success = (returnCode = 'OK')
 (remember, operators line `+=` are on their way > 12.2)
 
 ## if-then-else
-Parentheses are put around the expression.
+Parentheses are put around the expression. `if-then-do` as much as possible on one line, probably most of your audience reads from left to right.
 
 ```
 if (expr) then
@@ -56,7 +63,7 @@ end.
 ```
 
 ## compound expressions
-Try to make them clear, use a variable telling what the (way too long) expression is:
+Try to make them clear, use a variable telling what the (way too long) expression represents:
 
 NOT:
 ```
@@ -96,3 +103,95 @@ class Foo:
     // and call add(1, Y).
 end class.
 ```
+
+# classes
+
+Class name should be nouns, `Person`, `Address` are perfect examples. Sometimes this is a but harder, for example classes with just static method (keep those limited). `Helper`, `Processor` or `Manager` are most of the time useful postfixes for these. Think `StringHelper` where `String` that it holds an actual string (character).
+
+## using
+For every class used the should be a separate `using` line:
+
+```
+using OpenEdge.Core.String.
+using OpenEdge.Core.Memptr.
+```
+
+NOT:
+```
+using OpenEdge.Core.*.
+```
+
+When using wildcards it's never clear where the classes used are coming from, so DON'T.
+An added bonus is that it's easier to search for the use of classes (without having to resort to xref etc).
+
+### from
+Classes are searched for first in the `propath` and then in the assemblies (if applicable). Compiling sources can be a lot quicker if .NET using's are post fixed with `from assembly.`. This way the compiler can skip searching the propath.
+Tip: don't use .NET classes, it wil bite you somewhere along the line.
+
+Remove `from propath`, it just clutters your source without benefits.
+
+## block-level
+Make sure that there's always a:
+```block-level on error undo, throw.``` 
+on top of your `.cls` file. This way you don't loose exceptions in for example `for each` statements. If you want to conceal an exception, use a `catch` block.
+This is not just for classes, `.p` benefit from this as well.
+
+# proceduces (.p)
+One `.p` should ran normally or persistently, not both. If a procedure is not programmed to be ran persistently this can give nasty results if they being used persistent (think transaction, trigger overrides). 
+
+## non-persistent
+Add the following to non-persistent procedure:
+```
+if (this-procedure:persistent) then
+  undo, throw new AppError(substitute('&1 should not be ran persistently', this-procedure:file-name), -1).
+```
+or similar.
+
+## persistent
+Make sure that all internal procedure which are not meant to be accessed from the outside to be `private`:
+``` 
+procedure toString() private:
+```
+
+## internal procedures
+End the procedure as follows:
+```
+end procedure.  // toString
+```
+
+So, with `procedure` after `end` AND a comment stating the procedure name, two spaces after the dot(`.`). Improves readability and accidental poking in the wrong procedure.
+
+# functions
+Use functions rather than (internal) procedure. Although one has to provide a `forward` defintion it makes for much more elegant code:
+
+```
+if (isOrderOK(orderNumber)) then
+...
+```
+
+is far preferable to 
+```
+define variable orderOK as logical no-undo.
+
+run isOrderOk(output orderOK).
+if (isOrderOK) then
+...
+```
+
+## definition 
+Functions are preferably defined on one line and ended with a comment like:
+```
+function isOrderOK returns logical private (orderNumber as integer):
+  
+  define orderOK as logical no-undo.
+
+  return orderOK.
+
+end function.  // isOrderOK
+```
+It is considered good style to define a variable with a name with resembles the function name to hold the return value. Improves readability. So `function getCustomerName` uses `customerName`, etc.
+Of course don't forget the `private` if it is in a persistent procedure, if appropriate. If not `private`, the function should start with a capital.
+
+
+
+
