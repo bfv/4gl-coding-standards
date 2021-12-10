@@ -164,6 +164,9 @@ So, with `procedure` after `end` AND a comment stating the procedure name, two s
 # includes
 Includes should be used sparsely. They are good for data definition (temp-table & dataset) and a few other case. DON'T put business logic in an include, there are more elegant way for this.
 
+Don't put double quotes around an include reference:
+`{src/adm2/smart.i}` doesn't need `"`.
+
 # functions
 Use functions rather than (internal) procedure. Although one has to provide a `forward` defintion it makes for much more elegant code:
 
@@ -212,5 +215,3 @@ At some point your code may end up on Linux and making this a habit greatly simp
 
 ## Avoid .NET
 ...
-
-
