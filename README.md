@@ -9,7 +9,7 @@
 - private members: camelCase
 
 ## indentation
-Indentation is 4 spaces. Not 2, not tabs.
+Indentation is 2 spaces. Not 4, not tabs.
 Correct indentation is essential for readability. There's no excuse to mess this up.
 
 ## prefixes
@@ -39,7 +39,7 @@ When in doubt, use parentheses for the expression:
 ```
 success = (returnCode = 'OK')
 ```
-(remember, operators line `+=` are on their way > 12.2)
+(remember, operators like `+=` are on their way > 12.2)
 
 ## if-then-else
 Parentheses are put around the expression. `if-then-do` as much as possible on one line, probably most of your audience reads from left to right.
@@ -193,5 +193,12 @@ It is considered good style to define a variable with a name with resembles the 
 Of course don't forget the `private` if it is in a persistent procedure, if appropriate. If not `private`, the function should start with a capital.
 
 
+## path separators
+Although Windows uses `\` and Linux/Unix `/` for path separators, in 4GL we use a `/` exclusively, except when the particular is outputted to some sort of Windows process.
+So: `run adm2/smart.p` and never ever `run adm2\smart.p`. 
+
+## backslashes
+If it is necessary to use `\` somehow (see above) in a string, ALWAYS prefix it with a tilde `~`. So: `"~\"`. \
+At some point your code may end up on Linux and making this a habit greatly simplifies your task.
 
 
