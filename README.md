@@ -83,7 +83,7 @@ Use a variable to tell the reader what the expression actually represents. Use t
 The performance impact of using a variable is negligible, the readability is increased dramatically.
 
 ## functions/methods
-Try for your methods and functions to be pure. This mean that the result is a function of the input parameters AND has no side effects. The latter is not always possible (think database I/O), but well worth striving for. It makes your code predictable and testables. Try to avoid using "globals" in functions/methods. If they are needed inject then parameter. So:
+Try for your methods and functions to be pure. This mean that the result is a function of the input parameters AND has no side effects. The latter is not always possible (think database I/O), but well worth striving for. It makes your code predictable and testable. Try to avoid using "globals" in functions/methods. If they are needed inject them parameter. So:
 
 ```
 class Foo:
@@ -133,8 +133,8 @@ Remove `from propath`, it just clutters your source without benefits.
 ## block-level
 Make sure that there's always a:
 ```block-level on error undo, throw.``` 
-on top of your `.cls` file. This way you don't loose exceptions in for example `for each` statements. If you want to conceal an exception, use a `catch` block.
-This is not just for classes, `.p` benefit from this as well.
+on top of your `.cls` file. This way you don't lose exceptions in for example `for each` statements. If you want to conceal an exception, use a `catch` block.
+This is not just for classes, `.p`'s benefit from this as well.
 
 # proceduces (.p)
 One `.p` should ran normally or persistently, not both. If a procedure is not programmed to be ran persistently this can give nasty results if they being used persistent (think transaction, trigger overrides). 
@@ -148,7 +148,7 @@ if (this-procedure:persistent) then
 or similar.
 
 ## persistent
-Make sure that all internal procedure which are not meant to be accessed from the outside to be `private`:
+Make sure that all internal procedures which are not meant to be accessed from the outside to be `private`:
 ``` 
 procedure toString() private:
 ```
@@ -160,6 +160,9 @@ end procedure.  // toString
 ```
 
 So, with `procedure` after `end` AND a comment stating the procedure name, two spaces after the dot(`.`). Improves readability and accidental poking in the wrong procedure.
+
+# includes
+Includes should be used sparsely. They are good for data definition (temp-table & dataset) and a few other case. DON'T put business logic in an include, there are more elegant way for this.
 
 # functions
 Use functions rather than (internal) procedure. Although one has to provide a `forward` defintion it makes for much more elegant code:
@@ -193,6 +196,12 @@ It is considered good style to define a variable with a name with resembles the 
 Of course don't forget the `private` if it is in a persistent procedure, if appropriate. If not `private`, the function should start with a capital.
 
 
+# Linux
+The following are essential for running code on Linux, but are a good haibit in general.
+
+## case
+ALWAYS use the correct case for filenames and class names. This is the main reason for .i's and .p filenames to be lowercase.
+
 ## path separators
 Although Windows uses `\` and Linux/Unix `/` for path separators, in 4GL we use a `/` exclusively, except when the particular is outputted to some sort of Windows process.
 So: `run adm2/smart.p` and never ever `run adm2\smart.p`. 
@@ -200,5 +209,8 @@ So: `run adm2/smart.p` and never ever `run adm2\smart.p`.
 ## backslashes
 If it is necessary to use `\` somehow (see above) in a string, ALWAYS prefix it with a tilde `~`. So: `"~\"`. \
 At some point your code may end up on Linux and making this a habit greatly simplifies your task.
+
+## Avoid .NET
+...
 
 
