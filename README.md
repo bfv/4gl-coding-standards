@@ -198,6 +198,14 @@ end function.  // isOrderOK
 It is considered good style to define a variable with a name with resembles the function name to hold the return value. Improves readability. So `function getCustomerName` uses `customerName`, etc.
 Of course don't forget the `private` if it is in a persistent procedure, if appropriate. If not `private`, the function should start with a capital.
 
+## usage
+Readability usually improves when using some space here and then. However, don't exagerate:
+```
+yes:   y = f(x).
+no:    y = f (x). 
+worse: y = f ( x ) .
+worst: y = f ( input x ) .
+```  
 
 # Linux
 The following are essential for running code on Linux, but are a good haibit in general.
